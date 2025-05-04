@@ -83,20 +83,19 @@ app.post('/api/notify', cors(), async (req, res) => {
 // Endpoint to update threshold
 app.post('/api/threshold', cors(), async (req, res) => {
   try {
-    const { value } = req.body;
+    const parsedValue = parseInt(req.body.value);
     
-    if (value === undefined || value < 1) {
+    if (isNaN(parsedValue) || parsedValue < 1) {
       return res.status(400).json({ error: 'Valid threshold value is required' });
     }
 
-    threshold = parseInt(value);
-    
-    // Notify all clients about threshold change
+    threshold = parsedValue;
+
     const notification = {
       count: currentCount,
       message: `Threshold updated to ${threshold}`,
       type: currentCount >= threshold ? 'danger' : 'info',
-      threshold: threshold,
+      threshold,
       timestamp: new Date().toISOString()
     };
 
@@ -110,6 +109,7 @@ app.post('/api/threshold', cors(), async (req, res) => {
     res.status(500).json({ error: 'Failed to update threshold' });
   }
 });
+
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
