@@ -6,7 +6,8 @@ const cors = require("cors");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
+const APP_NAME = "Alert_Service"
 
 // Middleware
 app.use(express.json());
@@ -18,7 +19,7 @@ let currentCount = 0;
 
 // Basic Route
 app.get("/", (req, res) => {
-  res.send(`Welcome to ${process.env.APP_NAME}`);
+  res.send(`Welcome to ${APP_NAME}`);
 });
 
 // SSE endpoint for frontend to connect
